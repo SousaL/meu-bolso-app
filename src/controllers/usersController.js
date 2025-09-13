@@ -8,13 +8,13 @@ async function createUser(req, res) {
 }
 
 async function allUsers(req, res) {
-  const users = await User.find();
+  const users = await User.find().populate('accounts');
   res.json(users);
 }
 
 async function getById(req, res) {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('accounts');
     if (!user) {
       return res.status(404).json({ erro: "Usuario nao encontrado" });
     }
