@@ -1,0 +1,32 @@
+services:
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    # networks:
+    #   - shared-network
+  
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+
+    ports:
+      - 8081:8081
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongo:27017
+     
+  
+
+volumes:
+  dbdata:
+
+# networks:
+#   shared-network:
+#     external: true
