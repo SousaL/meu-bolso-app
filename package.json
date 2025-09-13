@@ -1,7 +1,6 @@
 {
   "name": "meu-bolso-app",
   "version": "1.0.0",
-  "description": "",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
@@ -15,5 +14,15 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guilherme-iob/meu-bolso-app.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/guilherme-iob/meu-bolso-app/issues"
+  },
+  "homepage": "https://github.com/guilherme-iob/meu-bolso-app#readme",
+  "description": ""
 }
