@@ -1,11 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const usersRoutes = require("./routes/usersRoute");
+const accountsRoutes = require("./routes/accountsRoute");
+
 const app = express();
 
 app.use(express.json());
 
 app.use("/users", usersRoutes);
+app.use("/accounts", accountsRoutes);
+
 
 mongoose.connect("mongodb://localhost:27017/meu-bolso")
   .then(() => {

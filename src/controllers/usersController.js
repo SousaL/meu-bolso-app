@@ -1,28 +1,48 @@
-let users = [
-  { id: 0, name: "Joao", email: "joao@email.com" },
-  { id: 1, name: "Maria", email: "maria@email.com" },
-  { id: 2, name: "Franscico", email: "franscico@email.com" },
-];
+const User = require("../models/users");
 
-function createUser(req, res) {
+async function createUser(req, res) {
   const { name, email } = req.body;
-  const user = { id: users.length, name: name, email: email };
-  users.push(user);
+  const user = new User({ name, email });
+  await user.save();
   res.status(201).json(user);
 }
 
-function allUsers(req, res){
-    res.json(users)
+async function allUsers(req, res) {
+  const users = await User.find();
+  res.json(users);
 }
 
-function getById(req, res){
-    let user = users.find((r) => r.id === parseInt(req.params.id));
+async function getById(req, res) {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ erro: "Usuario nao encontrado" });
+    }
     res.json(user);
+  } catch (err) {
+    res.status(400).json({ erro: "ID invalido" });
+  }
 }
 
+async function updateUser(req, res) {
+  try {
+      const user = await User.findByIdAndUpdate(req.params.id, req.body)
+      const userUpdated = await User.findById(req.params.id)
+      res.json(userUpdated)
+  } catch (err) {
+    res.status(400).json({ erro: "ID invalido" });
+  }
+}
+
+async function deleteUser(req, res){
+  await User.findByIdAndDelete(req.params.id);
+  res.status(204).send()
+}
 
 module.exports = {
-    createUser,
-    allUsers,
-    getById,
-}
+  createUser,
+  allUsers,
+  getById,
+  updateUser,
+  deleteUser
+};
