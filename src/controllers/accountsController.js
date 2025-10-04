@@ -2,20 +2,23 @@ const Account = require("../models/account");
 const User = require("../models/users");
 
 async function createAccount(req, res) {
-  const { name, balance, user } = req.body;
-  const account = new Account({name, balance, user })
+  const { name, balance, type } = req.body;
+  const user = req.user
+
+  const account = new Account({name, balance, type, user })
   const newAccount = await account.save();
 
-  console.log(account);
-  const userModel = await User.findById(account.user._id)
-  userModel.accounts.push(account._id);
-  await userModel.save()
+  // const userModel = await User.findById(account.user._id)
+  user.accounts.push(account._id);
+  user.save()
 
   res.status(201).json(account);
 }
 
 async function allAccounts(req, res) {
-  const accounts = await Account.find().populate('user');
+  const user = req.user;
+
+  const accounts = await Account.find({user: user}).populate('user');
   res.json(accounts);
 }
 
