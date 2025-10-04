@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
-const accountSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     name: String,
-    balance: Number,
-    type: { type: String, enum: ['wallet', 'creditCard', 'bank']},
+    type: { type: String, enum: ['income', 'expense']},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 

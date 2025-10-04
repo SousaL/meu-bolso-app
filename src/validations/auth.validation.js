@@ -1,12 +1,21 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
-const { password } = require('./custom.validation')
+const { password } = require("./custom.validation");
 
-const register = Joi.object({
-    name: Joi.string(),
+const registerValidate = {
+  body: Joi.object().keys({
+    name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required().custom(password),
-    role: Joi.string().required().valid('user', 'admin')
-})
+    role: Joi.string().valid("user", "admin"),
+  }),
+};
 
-module.exports = {register}
+const loginValidate = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+};
+
+module.exports = { registerValidate, loginValidate };
