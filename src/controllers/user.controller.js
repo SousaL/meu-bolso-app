@@ -1,14 +1,18 @@
-const User = require("../models/users");
+const { User }  = require("../models");
+const userService = require("../services/user.service");
 
 async function createUser(req, res) {
-  const { name, email } = req.body;
-  const user = new User({ name, email });
-  await user.save();
-  res.status(201).json(user);
+  // const { name, email } = req.body;
+  // const user = new User({ name, email });
+  // await user.save();
+  // res.status(201).json(user);
+
+  const user = userService.createUser(req.body);
+  res.status(200).send(user);
 }
 
 async function allUsers(req, res) {
-  const users = await User.find().populate('accounts');
+  const users = await User.paginte(null, {limit: 1, page: 2});
   res.json(users);
 }
 

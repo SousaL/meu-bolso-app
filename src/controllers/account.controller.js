@@ -1,5 +1,4 @@
-const Account = require("../models/account");
-const User = require("../models/users");
+const { Account, User } = require("../models");
 
 async function createAccount(req, res) {
   const { name, balance, type } = req.body;

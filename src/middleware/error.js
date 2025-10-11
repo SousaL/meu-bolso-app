@@ -1,4 +1,5 @@
 const { error } = require("winston");
+const logger = require('../config/logger');
 
 
 const errorHandler = (err, req, res, next) => {

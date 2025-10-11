@@ -4,7 +4,6 @@ const accountType = {
     BANK: 'bank'
 }
 
-
 module.exports = {
     accountType
 }
