@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("./config/logger");
 const morgan = require("./config/morgan");
-const { errorHandler } = require("./middleware/error");
+const { errorHandler, errorConverter } = require("./middleware/error");
 
 const { userRoute, accountRoute, authRoute } = require("./routes");
 
@@ -20,6 +20,7 @@ app.use("/users", userRoute);
 app.use("/accounts", accountRoute);
 app.use("/auth", authRoute);
 
+app.use(errorConverter);
 app.use(errorHandler);
 
 mongoose

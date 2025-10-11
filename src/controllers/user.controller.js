@@ -1,19 +1,18 @@
-const { User }  = require("../models");
+const { Users }  = require("../models");
 const userService = require("../services/user.service");
+const logger = require('../config/logger');
+const pick = require('../utils/pick');
 
 async function createUser(req, res) {
-  // const { name, email } = req.body;
-  // const user = new User({ name, email });
-  // await user.save();
-  // res.status(201).json(user);
-
   const user = userService.createUser(req.body);
   res.status(200).send(user);
 }
 
-async function allUsers(req, res) {
-  const users = await User.paginte(null, {limit: 1, page: 2});
-  res.json(users);
+async function getUsers(req, res) {
+  const filter = pick(req.query, ['name']);
+  const options = pick(req.query, ['sortBy', 'filter', 'page'])
+  const result = await userService.queryUsers(filter, options);
+  res.json(result);
 }
 
 async function getById(req, res) {
@@ -45,7 +44,7 @@ async function deleteUser(req, res){
 
 module.exports = {
   createUser,
-  allUsers,
+  getUsers,
   getById,
   updateUser,
   deleteUser
