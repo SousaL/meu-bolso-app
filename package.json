@@ -7,14 +7,16 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "test": "jest -i --colors --verbose --detectOpenHandles"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest -i --colors --verbose --detectOpenHandles",
+    "test:watch": "jest -i --verbose --watchAll"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "http-status": "^1.4.0",
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
@@ -22,7 +24,9 @@
     "winston": "^3.18.3"
   },
   "devDependencies": {
+    "faker": "^5.5.3",
     "jest": "^29.7.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
   }
 }

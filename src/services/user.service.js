@@ -9,6 +9,16 @@ const createUser = async (userBody) => {
     return User.create(userBody);
 }
 
+/**
+ * Get user by email
+ * @param {string} email
+ * @returns {Promise<User>} 
+ */
+const getUserByEmail = async (email) => {
+    return User.findOne({ email });
+}
+
+
 
 /**
  * Query for users
@@ -27,5 +37,6 @@ const queryUsers = async(filter, options) =>{
 
 module.exports = {
     createUser,
+    getUserByEmail,
     queryUsers
 }

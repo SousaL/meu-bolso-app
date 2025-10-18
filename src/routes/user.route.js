@@ -5,7 +5,6 @@ const userValidate = require("../middleware/userValidate")
 
 const authMiddleware = require("../middleware/authMiddleware");
 
-
 router.get("/", getUsers);
 router.get("/:id", getById);
 router.post("/", userValidate, createUser); 
