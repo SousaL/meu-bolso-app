@@ -8,7 +8,10 @@ let config = {
       (process.env.NODE_ENV === "test" ? "-test" : ""),
   },
   port: process.env.PORT,
-  env: process.env.NODE_ENV
+  env: process.env.NODE_ENV,
+  jwt: {
+    secret: process.env.JWT_SIGNATURE,
+  }
 };
 
 module.exports = config;

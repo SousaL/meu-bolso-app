@@ -1,24 +1,38 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const passport = require("passport");
+const httpStatus = require("http-status");
+const ApiError = require("../utils/ApiError");
 
-function authMiddleware(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if(!token){
-        return res.status(401).json({ error: "Token nao fornecido"});
+const verifyCallback =
+  (req, resolve, reject, requiredRights) => async (err, user, info) => {
+    if (err || info || !user) {
+      return reject(
+        new ApiError(httpStatus.UNAUTHORIZED, "Necessario Autenticacao")
+      );
     }
 
-    jwt.verify(token, process.env.JWT_SIGNATURE, async (err, user) => {
-        if(err){
-            return res.status(403).json({ error: "Token Invalido"});
-        }
+    req.user = user;
+    
+    if (requiredRights.includes("admin") && user.role != "admin") {
+      return reject(new ApiError(httpStatus.FORBIDDEN, "Sem Autorizaca"));
+    }
 
-        const userModel = await User.findById(user.id)
+    resolve();
+  };
 
-        req.user = userModel; // Adicionar na requisicao o user.
-        next();
+const auth =
+  (...requiredRights) =>
+  async (req, res, next) => {
+    return new Promise((resolve, reject) => {
+      passport.authenticate(
+        "jwt",
+        { session: false },
+        verifyCallback(req, resolve, reject, requiredRights)
+      )(req, res, next);
     })
-}
+      .then(() => next())
+      .catch((err) => next(err));
+  };
 
-module.exports = authMiddleware;
+module.exports = auth;

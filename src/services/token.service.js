@@ -1,20 +1,21 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { tokenTypes } = require("../config/tokens");
 
-const generateToken = (user, expiresIn) => {
-  const payload = { id: user._id, email: user.email };
+const generateToken = (user, expiresIn, type) => {
+  const payload = { sub: user._id, type };
   const signature = process.env.JWT_SIGNATURE;
   return jwt.sign(payload, signature, { expiresIn: expiresIn });
 };
 
 const generateAccessToken = (user) => {
   const expiresIn = process.env.JWT_EXPIRES_IN_ACCESS;
-  return generateToken(user, expiresIn);
+  return generateToken(user, expiresIn, tokenTypes.ACCESS);
 };
 
 const generateRefreshToken = (user) => {
   const expiresIn = process.env.JWT_EXPIRES_IN_REFRESH;
-  return generateToken(user, expiresIn);
+  return generateToken(user, expiresIn, tokenTypes.REFRESH);
 };
 
 const generateAuthTokens = (user) => {
@@ -30,7 +31,7 @@ const verifyToken = async (refreshToken) => {
 }
 
 module.exports = {
-  generateAccessToken,
+  generateAccessToken, 
   generateRefreshToken,
   generateAuthTokens,
   verifyToken

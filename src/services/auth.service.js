@@ -1,6 +1,8 @@
 const ApiError = require("../utils/ApiError");
 const { tokenService } = require(".");
 const httpStatus = require("http-status");
+const { userService } = require(".");
+
 
 /**
  * Login with email and password
@@ -9,17 +11,20 @@ const httpStatus = require("http-status");
  * @returns {Promise<User>}
  */
 
-const { userService } = require(".");
-
 const login = async (email, password) => {
-  const user = userService.getUserByEmail(email);
-
+  const user = await userService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Email ou Senha incorreto");
   }
 
   return user;
 };
+
+/**
+ * 
+ * @param {string} refreshToken 
+ * @returns 
+ */
 
 const refresh = async (refreshToken) => {
   try {

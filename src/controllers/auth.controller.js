@@ -1,5 +1,3 @@
-const { User } = require("../models");
-
 const { userService, tokenService, authService } = require("../services");
 const httpStatus = require('http-status');
 
@@ -16,7 +14,6 @@ const login = async (req, res) => {
   const tokens = tokenService.generateAuthTokens(user);
 
   return res.send({ user, tokens});
-
 }
 
 async function refresh(req, res) {

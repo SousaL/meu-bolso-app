@@ -5,7 +5,7 @@ const {
   profile,
   refresh,
 } = require("../controllers/auth.controller");
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/authMiddleware");
 const validate = require("../middleware/validate");
 const {
   registerValidate,
@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post("/register", validate(registerValidate), register);
 router.post("/login", validate(loginValidate), login);
-router.get("/profile", authMiddleware, profile);
+router.get("/profile", auth, profile);
 router.post("/refresh", refresh);
 
 module.exports = router;
