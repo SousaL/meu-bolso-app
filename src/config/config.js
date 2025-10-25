@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({quiet: true});
+dotenv.config({ quiet: true });
 
 let config = {
   mongoose: {
@@ -11,7 +11,9 @@ let config = {
   env: process.env.NODE_ENV,
   jwt: {
     secret: process.env.JWT_SIGNATURE,
-  }
+    accessExpiration: process.env.JWT_EXPIRES_IN_ACCESS,
+    refreshExpiration: process.env.JWT_EXPIRES_IN_REFRESH,
+  },
 };
 
 module.exports = config;

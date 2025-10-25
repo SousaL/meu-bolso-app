@@ -3,6 +3,9 @@ const httpStatus = require("http-status");
 const faker = require("faker");
 
 const setupTestDB = require("../utils/setupTestDB");
+const { userOne, userTwo, admin, insertUsers } = require("../fixtures/user.fixture");
+const { userOneAccessToken, adminAccessToken } = require("../fixtures/token.fixture");
+
 const app = require("../../src/app");
 
 setupTestDB();
@@ -10,7 +13,7 @@ setupTestDB();
 describe("User routes", () => {
   describe("GET /users", () => {
     let newUser;
-
+    
     // beforeEach(() => {
     //   newUser = {
     //     name: faker.name.findName(),
@@ -19,8 +22,28 @@ describe("User routes", () => {
     //   };
     // });
 
-    test("Deve retornar 201 se o usuario foi registrado com sucesso", async () => {
-    
+    test("Deve retornar 201 com query padrao", async () => {
+     
+        await insertUsers([userOne, userTwo, admin])
+
+
+        var res = await request(app)
+            .get("/users")
+            .set('Authorization', `Bearer ${adminAccessToken}`)
+            .expect(httpStatus.OK);
+
+
+        expect(res.body).toEqual({
+            results: expect.any(Array),
+            page: 1,
+            limit: 10,
+            totalPages: 1,
+            totalResults: 3
+        })
+
+        expect(res.body.results).toHaveLength(3);
+
+
     //   var res = await request(app)
     //     .post("/auth/register")
     //     .send(newUser)
