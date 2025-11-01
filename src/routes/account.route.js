@@ -6,10 +6,20 @@ const { createAccountValidate } = require("../validations/account.validation");
 const auth = require("../middleware/authMiddleware");
 
 
-router.get("/", auth, allAccounts);
-router.get("/:id", getById);
-router.post("/", auth, validate(createAccountValidate), createAccount); 
-router.put("/:id", updateAccount);
-router.delete("/:id", deleteAccount);
+// RETORNAR TODAS AS CONTAS
+// RETORNAR UMA CONTA
+// CRIAR UMA CONTA
+// DELETAR UMA CONTA
+// ATUALIZAR UMA CONTA
+
+
+router.post("/", auth(), createAccount); 
+
+
+// router.get("/", auth, allAccounts);
+// router.get("/:id", getById);
+// router.post("/", auth, validate(createAccountValidate), createAccount); 
+// router.put("/:id", updateAccount);
+// router.delete("/:id", deleteAccount);
 
 module.exports = router

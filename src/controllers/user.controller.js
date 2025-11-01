@@ -1,7 +1,8 @@
-const { Users }  = require("../models");
 const userService = require("../services/user.service");
 const logger = require('../config/logger');
 const pick = require('../utils/pick');
+const httpStatus = require("http-status");
+const ApiError = require("../utils/ApiError");
 
 async function createUser(req, res) {
   const user = userService.createUser(req.body);
@@ -10,42 +11,33 @@ async function createUser(req, res) {
 
 async function getUsers(req, res) {
   const filter = pick(req.query, ['name']);
-  const options = pick(req.query, ['sortBy', 'filter', 'page'])
+  const options = pick(req.query, ['sortBy', 'filter', 'page', 'limit'])
   const result = await userService.queryUsers(filter, options);
   res.json(result);
 }
 
-async function getById(req, res) {
-  try {
-    const user = await User.findById(req.params.id).populate('accounts');
-    if (!user) {
-      return res.status(404).json({ erro: "Usuario nao encontrado" });
-    }
-    res.json(user);
-  } catch (err) {
-    res.status(400).json({ erro: "ID invalido" });
+async function getUser(req, res) {
+  const user = await userService.getUserById(req.params.id);
+  if(!user){
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario nao encontrado')
   }
+  res.send(user);
 }
 
 async function updateUser(req, res) {
-  try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body)
-      const userUpdated = await User.findById(req.params.id)
-      res.json(userUpdated)
-  } catch (err) {
-    res.status(400).json({ erro: "ID invalido" });
-  }
+  const user = await userService.updateUserById(req.params.id, req.body);
+  res.send(user);
 }
 
 async function deleteUser(req, res){
-  await User.findByIdAndDelete(req.params.id);
-  res.status(204).send()
+  await userService.deleteUserById(req.params.id);
+  res.status(httpStatus.NO_CONTENT).send();
 }
 
 module.exports = {
   createUser,
   getUsers,
-  getById,
+  getUser,
   updateUser,
   deleteUser
 };

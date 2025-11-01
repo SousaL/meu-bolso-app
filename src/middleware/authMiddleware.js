@@ -15,7 +15,7 @@ const verifyCallback =
     req.user = user;
     
     if (requiredRights.includes("admin") && user.role != "admin") {
-      return reject(new ApiError(httpStatus.FORBIDDEN, "Sem Autorizaca"));
+      return reject(new ApiError(httpStatus.FORBIDDEN, "Sem Autorizacao"));
     }
 
     resolve();

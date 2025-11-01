@@ -18,8 +18,6 @@ app.use(express.json());
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
-
-
 app.use("/users", userRoute);
 app.use("/accounts", accountRoute);
 app.use("/auth", authRoute);

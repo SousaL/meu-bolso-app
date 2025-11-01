@@ -27,8 +27,7 @@ const errorHandler = (err, req, res, next) => {
     stack: err.stack,
   };
 
-  logger.error(err);
-  res.send(response);
+  res.status(statusCode).send(response);
 };
 
 module.exports = {

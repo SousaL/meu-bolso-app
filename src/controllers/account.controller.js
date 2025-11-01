@@ -1,17 +1,14 @@
-const { Account, User } = require("../models");
+const { Users }  = require("../models");
+const accountService = require("../services/account.service");
+const logger = require('../config/logger');
+const pick = require('../utils/pick');
+const httpStatus = require("http-status");
+const ApiError = require("../utils/ApiError");
+
 
 async function createAccount(req, res) {
-  const { name, balance, type } = req.body;
-  const user = req.user
-
-  const account = new Account({name, balance, type, user })
-  const newAccount = await account.save();
-
-  // const userModel = await User.findById(account.user._id)
-  user.accounts.push(account._id);
-  user.save()
-
-  res.status(201).json(account);
+  const account = await accountService.createAccount(req.user.id, req.body);
+  res.status(httpStatus.CREATED).send(account);
 }
 
 async function allAccounts(req, res) {
