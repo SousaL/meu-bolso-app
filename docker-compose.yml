@@ -21,7 +21,15 @@ services:
       - mongo
     environment:
       - ME_CONFIG_MONGODB_URL=mongodb://mongo:27017
-     
+  
+  bolso:
+    build: .
+    container_name: bolso
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    env_file: .env     
   
 
 volumes:
